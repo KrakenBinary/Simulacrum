@@ -1,0 +1,69 @@
+#!/usr/bin/python3
+
+'''
+Author: KrakenBinary
+I know it is python ... dont hate.
+'''
+
+import sys
+
+
+class Analysis:  # pylint: disable=too-few-public-methods
+    '''lets hold data in the class I suppose?'''
+    f = None
+
+
+def quit_me():
+    '''exit the application'''
+    sys.exit()
+
+
+def set_directory_file(dir_path_file):
+    '''set directory path with file for anylysis'''
+    Analysis.f = dir_path_file
+    print('File path set to: ', Analysis.f)
+    main()
+
+
+def get_file_path():
+    '''check the file path'''
+    print('File path set to: ', Analysis.f)
+    main()
+
+
+def parse_me(string_in):
+    '''parse input for various things'''
+    command, value = (string_in.split(" ") + [None])[:2]
+    if not value:
+        if command in blank_commands:
+            blank_commands[command]()
+    if command in commands:
+        commands[command](value)
+    else:
+        print('Something went sideways, returing to main')
+        main()
+
+
+def main():
+    '''main loop'''
+    while True:
+        user_input = input('$> ')
+        print(user_input)
+        parse_me(user_input)
+
+
+commands = {
+    "sd": set_directory_file,
+    "sf": set_directory_file,
+    "sdf": set_directory_file
+    }
+
+
+blank_commands = {
+    "q": quit_me,
+    "fp": get_file_path,
+    "dp": get_file_path
+    }
+
+
+main()
