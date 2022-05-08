@@ -4,15 +4,20 @@
 Author: KrakenBinary
 DevTools: Geany, pycodestyle, pyflakes3, pylint
 Des: This will become a tool for CTF file analysis
+
+TestFile:
+~/Downloads/Hue is This.jpeg
 '''
 
 import sys
+import os
 
 
 class Analysis:
     '''lets hold data in the class I suppose?'''
     dir_file = None  # This is the directory + file location
-    flag_temp = None  # This is the string "format" (ex: 'flag{}')
+    progress = 0  # we use this te determin how often to spam text.
+    # flag_temp = None  # This is the string "format" (ex: 'flag{}')
 
     @classmethod
     def get_loc(cls):
@@ -22,8 +27,20 @@ class Analysis:
     @classmethod
     def set_loc(cls, dir_str):
         '''set the file location for our target'''
-        cls.dir_file = dir_str
+        cls.dir_file = '"' + dir_str + '"'
         print('directory path now set to: ', cls.dir_file)
+
+    @classmethod
+    def anal_file(cls):  # currently not working. 
+        '''run file command on your directory and file'''
+        dir_str = 'file ' + cls.dir_file
+        if cls.dir_file:
+            shell_me(dir_str)
+
+
+def shell_me(shell_cmd):
+    '''meant to allow the user to execute shell commands'''
+    os.system(shell_cmd)
 
 
 def quit_me():
@@ -33,49 +50,68 @@ def quit_me():
 
 def parse_me(string_in):
     '''parse input for various things'''
-    command, value = (string_in.split(" ") + [None])[:2]
+    command, value = (string_in.split(" ", 1) + [None])[:2]
     if not value:
         if command in blank_commands:
             blank_commands[command]()
     elif command in commands:
         commands[command](value)
     else:
-        print('Something went sideways, returing to main')
-        main()
+        print('\n::::::::::::::::::::::::::ERROR::::::::::::::::::::::::::')
+        print('Command & Value not recognized: returing to main()')
 
 
 def help_me():
     '''this is the basic application help information.'''
-    print('\nWelcome to Simulacrum. Please use the following commands:')
     print('---------------------------------------------------------')
-    print('    - h  | help information')
-    print('    - q  | quit this application')
-    print('    - gd | get directory that is currently set')
-    print('    - sd | set direcotry (includes filename)')
-    print('\n---------------------------------------------------------')
-    print('The following is an example usage:')
-    print('$> sd ~/home/krakenbinary/Downloads/ocean.py')
-
-
-def main():
-    '''main loop'''
-    help_me()
-    while True:
-        user_input = input('$> ')
-        # print(user_input)
-        parse_me(user_input)
+    print('help(): Please use the following commands:')
+    print('---------------------------------------------------------')
+    print('    - h                 | help information')
+    print('    - p                 | print (copycat for debugging)')
+    print('    - q                 | quit this application')
+    print('    - $ <command> <arg> | incase you want to run shell commands')
+    print('    - gd                | get directory that is currently set')
+    print('    - sd <dir/file.ext> | set direcotry (includes filename)')
+    print('    - as                | analize strings on file')
+    print('    - ae                | exiftool on file')
+    print('    - af                | run file on file')
+    print('    - aa                | run all tools on file')
+    print('---------------------------------------------------------')
+    print('A few constraints:')
+    print('    + enter a command followed by a space')
+    print('''    + input parser blacklist includes `"'#!@_=''')
+    print('---------------------------------------------------------')
 
 
 commands = {
-    'sd': Analysis.set_loc
+    'sd': Analysis.set_loc,
+    '$': shell_me
     }
 
 
 blank_commands = {
     'q': quit_me,
     'h': help_me,
-    'gd': Analysis.get_loc
+    'gd': Analysis.get_loc,
+    'af': Analysis.anal_file
     }
+
+
+def msg_welcome():
+    '''play this to welcome people at startup'''
+    print('\nWelcome to Simulacrum. Please use "h" to learn more.')
+    print('+++++++++++++++++++++++++++++++++++++++++++++++++++++++++')
+
+
+def main():
+    '''pause here for user input. Do nothing else.'''
+    if Analysis.progress < 1:
+        msg_welcome()
+        Analysis.progress = Analysis.progress + 1
+    while True:
+        user_in = input('$> ')
+        user_in = user_in.translate({ord(i): None for i in '''`"'#!@_='''})
+        parse_me(user_in)
 
 
 main()
