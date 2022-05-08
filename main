@@ -2,33 +2,33 @@
 
 '''
 Author: KrakenBinary
-I know it is python ... dont hate.
+DevTools: Geany, pycodestyle, pyflakes3, pylint
+Des: This will become a tool for CTF file analysis
 '''
 
 import sys
 
 
-class Analysis:  # pylint: disable=too-few-public-methods
+class Analysis:
     '''lets hold data in the class I suppose?'''
-    f = None
+    dir_file = None  # This is the directory + file location
+    flag_temp = None  # This is the string "format" (ex: 'flag{}')
+
+    @classmethod
+    def get_loc(cls):
+        '''get the file location for our target'''
+        print('File path currently set to: ', cls.dir_file)
+
+    @classmethod
+    def set_loc(cls, dir_str):
+        '''set the file location for our target'''
+        cls.dir_file = dir_str
+        print('directory path now set to: ', cls.dir_file)
 
 
 def quit_me():
     '''exit the application'''
     sys.exit()
-
-
-def set_directory_file(dir_path_file):
-    '''set directory path with file for anylysis'''
-    Analysis.f = dir_path_file
-    print('File path set to: ', Analysis.f)
-    main()
-
-
-def get_file_path():
-    '''check the file path'''
-    print('File path set to: ', Analysis.f)
-    main()
 
 
 def parse_me(string_in):
@@ -37,32 +37,44 @@ def parse_me(string_in):
     if not value:
         if command in blank_commands:
             blank_commands[command]()
-    if command in commands:
+    elif command in commands:
         commands[command](value)
     else:
         print('Something went sideways, returing to main')
         main()
 
 
+def help_me():
+    '''this is the basic application help information.'''
+    print('\nWelcome to Simulacrum. Please use the following commands:')
+    print('---------------------------------------------------------')
+    print('    - h  | help information')
+    print('    - q  | quit this application')
+    print('    - gd | get directory that is currently set')
+    print('    - sd | set direcotry (includes filename)')
+    print('\n---------------------------------------------------------')
+    print('The following is an example usage:')
+    print('$> sd ~/home/krakenbinary/Downloads/ocean.py')
+
+
 def main():
     '''main loop'''
+    help_me()
     while True:
         user_input = input('$> ')
-        print(user_input)
+        # print(user_input)
         parse_me(user_input)
 
 
 commands = {
-    "sd": set_directory_file,
-    "sf": set_directory_file,
-    "sdf": set_directory_file
+    'sd': Analysis.set_loc
     }
 
 
 blank_commands = {
-    "q": quit_me,
-    "fp": get_file_path,
-    "dp": get_file_path
+    'q': quit_me,
+    'h': help_me,
+    'gd': Analysis.get_loc
     }
 
 
