@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 
-'''
+'''<コ:彡
 Author: KrakenBinary
 DevTools: Geany, pycodestyle, pyflakes3, pylint
 Des: This will become a tool for CTF file analysis
@@ -31,8 +31,11 @@ class Analysis:
         print('directory path now set to: ', cls.dir_file)
 
     @classmethod
-    def anal_file(cls):  # currently not working. 
-        '''run file command on your directory and file'''
+    def anal_file(cls):
+        '''run file command on your directory and file
+        TODO:
+            - Fix: file command not calling correctly
+            - Research moving cd for shell commands'''
         dir_str = 'file ' + cls.dir_file
         if cls.dir_file:
             shell_me(dir_str)
@@ -67,15 +70,15 @@ def help_me():
     print('help(): Please use the following commands:')
     print('---------------------------------------------------------')
     print('    - h                 | help information')
-    print('    - p                 | print (copycat for debugging)')
+    # print('    - p                 | print (copycat for debugging)')
     print('    - q                 | quit this application')
     print('    - $ <command> <arg> | incase you want to run shell commands')
     print('    - gd                | get directory that is currently set')
     print('    - sd <dir/file.ext> | set direcotry (includes filename)')
-    print('    - as                | analize strings on file')
-    print('    - ae                | exiftool on file')
+    # print('    - as                | analize strings on file')
+    # print('    - ae                | exiftool on file')
     print('    - af                | run file on file')
-    print('    - aa                | run all tools on file')
+    # print('    - aa                | run all tools on file')
     print('---------------------------------------------------------')
     print('A few constraints:')
     print('    + enter a command followed by a space')
