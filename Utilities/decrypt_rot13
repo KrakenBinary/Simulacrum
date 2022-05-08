@@ -1,0 +1,31 @@
+#!/usr/bin/python3
+
+'''
+Author: KrakenBinary
+This is a study at decrypting ROT13
+'''
+
+
+def de_rot_man(str_in):
+    '''Manually rot on a defined alphabet'''
+    rot_amt = 13
+    rot_str_low = '''abcdefghijklmnopqrstuvwxyz'''
+    rot_str_upp = '''ABCDEFGHIJKLMNOPQRSTUVWXYZ'''
+    num_chr_low = len(rot_str_low)
+    num_chr_upp = len(rot_str_upp)
+    str_out = ''
+    for cur_chr in str_in:
+        if cur_chr in rot_str_low:
+            chr_loc = rot_str_low.index(cur_chr)
+            new_loc = (chr_loc + rot_amt) % num_chr_low
+            str_out = str_out + rot_str_low[new_loc]
+        elif cur_chr in rot_str_upp:
+            chr_loc = rot_str_upp.index(cur_chr)
+            new_loc = (chr_loc + rot_amt) % num_chr_upp
+            str_out = str_out + rot_str_upp[new_loc]
+        else:
+            str_out = str_out + cur_chr
+    return str_out
+
+
+print(de_rot_man('''cvpbPGS{arkg_gvzr_V'yy_gel_2_ebhaqf_bs_ebg13_uJdSftmh}'''))
