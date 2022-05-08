@@ -3,6 +3,8 @@
 '''
 Author: KrakenBinary
 This is a study at decrypting ROT13
+    - Set the ROT to int (for change as needed)
+    - set the alphabet manually (for change as needed)
 '''
 
 
