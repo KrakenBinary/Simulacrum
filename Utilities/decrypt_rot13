@@ -7,6 +7,7 @@ This is a study at decrypting ROT13
     - set the alphabet manually (for change as needed)
 '''
 
+import sys
 
 def set_ranges(start, end):
     '''setting up a range based on ascii table'''
@@ -36,7 +37,26 @@ def de_rot_man(str_in):
             str_out = str_out + chr_now
     return str_out
 
-
+def cycle_chr():
+    rot_amt = 13
+    # srt_low, rng_end_low = 97, 122
+    srt_low, rng_end_low = 0, 9999
+    srt_upp, rng_end_upp = 65, 90
+    rng_low = set_ranges(srt_low, rng_end_low)
+    rng_upp = set_ranges(srt_upp, rng_end_upp)
+    rot_low = {c: chr(c) for c in rng_low}
+    rot_upp = {c: chr(c) for c in rng_upp}
+    str_out = ''
+    for c in rot_low:
+        if sys.getsizeof(c) != 28:
+            print (str(c) + ' | ' + str(sys.getsizeof(c)))
+        
+def get_65():
+    string_65 = 00000000000000000000000000000000
+    print(sys.getsizeof(string_65))
 # print(de_rot_man('''abcdefghijklmnopqrstuvwxyz'''))
 # print(de_rot_man('''ABCDEFGHIJKLMNOPQRSTUVWXYZ'''))
-print(de_rot_man('''cvpbPGS{arkg_gvzr_V'yy_gel_2_ebhaqf_bs_ebg13_uJdSftmh}'''))
+
+# print(de_rot_man('''cvpbPGS{arkg_gvzr_V'yy_gel_2_ebhaqf_bs_ebg13_uJdSftmh}'''))
+get_65()
+# cycle_chr()
